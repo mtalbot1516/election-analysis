@@ -31,7 +31,7 @@ with open(file_to_load) as election_data:
     
     #read and print headers
     headers = next(file_reader)
-    print(headers)
+
 
     #print each row in csv
     for row in file_reader:
@@ -62,6 +62,7 @@ with open(file_to_load) as election_data:
         
         #each voters stuff
         print(f"{candidate_name}: {vote_percentages:.1f}% ({votes:,}) \n")
+
         #determine if vote count is greater than winning count
         if (votes>winning_count) and (vote_percentages>winning_percentage):
             #set counts and percentages
@@ -75,21 +76,32 @@ with open(file_to_load) as election_data:
         f"Winning Vote Count: {winning_count:,} \n"
         f"Winning Percentage: {winning_percentage:.1f}%\n"
         f"---------------------\n")
-    print(winning_candidate_summary)
+    #print(winning_candidate_summary)
         
         
-
-
-
-#print total votes
-
-
 
 
 
 
 #use open and w to write the data to this file
 with open(file_to_save, "w") as txt_file:
+    #print Final Vote Count
+    election_results =(
+        f"\nElection Results\n"
+        f"--------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"--------------------------\n"
+    )
+    print(election_results, end="")
+    #save to text file
+    txt_file.write(election_results)
 
-    #wrrite to
-    txt_file.write("Arapahoe\nJefferson\nDenver")
+    for candidate_name in candidate_votes:
+        #retrieve vote count of a candidate
+        votes = candidate_votes[candidate_name]
+        vote_percentages = float(votes)/float(total_votes)*100
+        
+        candidate_results = (f"{candidate_name}: {vote_percentages:.1f}% ({votes:,}) \n")
+        txt_file.write(candidate_results)
+    txt_file.write(winning_candidate_summary)
+    
